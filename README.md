@@ -12,6 +12,12 @@ If it is unclear, say so honestly and provide a safe terminal fallback.
 
 ---
 
+## Quick links
+
+- [Demo cases](docs/demo-cases.md)
+
+---
+
 ## Why this exists
 
 Most repository runners fail in one of two ways:
@@ -72,6 +78,9 @@ This community demo currently focuses on a **small, verified support matrix**.
 This means the system already demonstrates both:
 - successful end-to-end launches
 - and honest fallback behavior when execution is not safely inferred
+
+See the full matrix here:
+- [docs/demo-cases.md](docs/demo-cases.md)
 
 ---
 
