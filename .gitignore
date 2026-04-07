@@ -1,0 +1,54 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Virtual environments
+.venv/
+venv/
+.service-venv/
+
+# Environment and secrets
+.env
+.env.*
+*.env
+
+# Logs and runtime files
+*.log
+error.txt
+input.txt
+output.txt
+
+# Sessions and temp/runtime artifacts
+/tmp/
+tmp/
+
+# Backups, snapshots, scratch files
+backups/
+batch_analysis_pending6/
+batch_analysis_top5/
+*.bak
+*.bak.*
+*.bak-*
+*.baseline-*
+*.before-*
+*.save
+*.save.*
+*.nano.save
+*.swp
+*.swo
+*~
+
+# Broken or local-only scratch files
+session_runtime_broken.py
+=
+
+# Node
+node_modules/
+
+# OS/editor junk
+.DS_Store
+Thumbs.db
+
+*.bak_*
