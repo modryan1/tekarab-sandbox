@@ -1,116 +1,241 @@
 # Tekarab Sandbox
 
-Tekarab Sandbox is a repository execution and preview system for GitHub repositories.
+Tekarab Sandbox is a truthful GitHub repository sandbox.
 
-It analyzes a repository, decides whether it is safely runnable, rewrites risky or misleading command plans when needed, and then chooses the most truthful user experience:
-- launch a real web preview
-- launch a real terminal flow
-- or fall back safely when execution is unclear
+It analyzes repositories, decides whether they are safely runnable, launches supported apps with a real preview when possible, and falls back safely when execution is unclear.
 
-The goal is not to pretend every repository works.
-The goal is to be truthful, stable, and useful.
+It is built around one core idea:
 
-## Current demo scope
+**Do not fake success.**
+If a repository is runnable, launch it.
+If it is unclear, say so honestly and provide a safe terminal fallback.
 
-This community demo currently focuses on a small number of reliable cases:
+---
 
-- Static or simple web app repos
-- Streamlit apps
-- Node/Vite web apps
-- Truthful fallback for template or unclear API-like repos
+## Why this exists
 
-## What makes it different
+Most repository runners fail in one of two ways:
 
-Most repo runners fail in one of two ways:
-1. they are too strict and reject everything
-2. they fake success even when the repo is not truly runnable
+1. They reject too many repositories and become useless.
+2. They pretend a repository worked even when it did not truly run.
 
-Tekarab Sandbox tries to avoid both problems.
+Tekarab Sandbox is designed to avoid both problems.
 
-It aims to:
-- infer a runnable plan from repository structure
-- detect when setup or execution is unclear
-- avoid unsafe or misleading launches
-- expose a real public preview when the app is actually reachable
-- show terminal fallback when a real preview is not ready
-- report blockers honestly instead of inventing fake success
+It tries to:
+- analyze repository structure and infer a runnable plan
+- choose a launch strategy based on real signals
+- rewrite or skip misleading commands when needed
+- expose a real public preview only when the app is actually reachable
+- fall back to terminal exploration when a truthful preview is not ready
+- report blockers honestly instead of inventing fake green status
 
-## Core flow
+---
 
-Tekarab Sandbox follows a practical pipeline:
+## What it does
 
-1. Analyze the repository
-2. Decide repo type, readiness, and launch strategy
-3. Rewrite or skip unsafe or misleading commands when needed
-4. Start a session
-5. Run setup and launch commands
-6. Detect a reachable service if one becomes available
-7. Return the best truthful experience:
+Tekarab Sandbox follows a practical execution pipeline:
+
+1. Analyze a GitHub repository
+2. Detect language, repo type, and runnable signals
+3. Infer setup steps and run steps
+4. Apply command safety and rewrite logic when needed
+5. Start an isolated session
+6. Run setup and launch commands
+7. Detect whether a real service becomes reachable
+8. Return the most truthful user experience:
    - web preview
-   - terminal fallback
+   - terminal flow
    - or deferred/manual-review outcome
+
+---
 
 ## Current verified demo cases
 
-The current working demo has already verified these categories:
+This community demo currently focuses on a **small, verified support matrix**.
 
-- Static/simple web preview case: PASS
-- Streamlit app case: PASS
-- Node/Vite web app case: PASS
-- API-like or template repo with unclear execution path: truthfully deferred
+### Supported and verified
+- Static/simple web app repositories
+- Streamlit app repositories
+- Node/Vite web app repositories
+
+### Truthfully deferred
+- Template repositories that require manual setup choices
+- API-like repositories with unclear execution paths
+- Repositories where safe execution cannot be inferred yet
+
+### Verified outcomes so far
+- Static/simple web preview case: **PASS**
+- Streamlit app case: **PASS**
+- Node/Vite web app case: **PASS**
+- API-like/template repo with unclear execution path: **Truthful deferred**
 
 This means the system already demonstrates both:
 - successful end-to-end launches
 - and honest fallback behavior when execution is not safely inferred
 
-## Key principles
+---
 
-- Truthful status over fake success
-- Stable preview over flashy but unreliable launch behavior
-- Small verified support matrix before expanding scope
-- Terminal fallback is acceptable when preview is not ready
-- Unsupported or unclear repos should be deferred honestly
+## What makes it different
 
-## Main files
+Tekarab Sandbox is not trying to claim universal repository support.
 
-- `api.py` - API entrypoint
-- `repo_analyzer.py` - repository inspection and signal extraction
-- `repo_decision.py` - repo classification, readiness, and execution strategy
-- `session_runtime.py` - session lifecycle, command execution, preview detection
-- `presentation_resolver.py` - user-facing launch experience resolution
-- `command_rewriter.py` - command rewrite safety layer
-- `smart_error_hints.py` - structured failure hints
-- `smart_timeout.py` - timeout heuristics
-- `interactive_detection.py` - interactive command detection
-- `strategy_insights.py` - strategy reasoning helpers
-- `run_command_policy.py` - command safety policy
-- `test_repo_matrix.py` - repo matrix verification
+Instead, it optimizes for:
+- truthful status over fake success
+- stable preview over flashy but unreliable behavior
+- a small verified matrix before expanding scope
+- clear fallback behavior when a launch path is uncertain
 
-## Current status
+The goal is not to "run everything."
+The goal is to become a reliable sandbox that tells the truth.
+
+---
+
+## Current demo scope
 
 This repository is being prepared as a community-facing demo build.
 
-Current focus:
+Current priorities:
 - keep the sandbox truthful
 - keep the supported matrix small and reliable
 - improve preview and terminal UX
 - document what works now before expanding support
 
-## Not yet the goal
+Not the current goal:
+- full support for every repository type
+- aggressive support claims
+- pretending template or unclear repos are production-ready
 
-This demo does not aim to fully support every repository type yet.
+---
 
-For now, the priority is:
-- a stable and honest sandbox
-- a small showcase of working repo types
-- clear behavior for non-runnable or unclear repos
+## High-level architecture
 
-## Planned next steps
+Core components:
 
-- clean remaining auxiliary files before public publishing
-- add example requests and demo screenshots
-- document supported vs deferred repo patterns
-- polish GitHub presentation for community sharing
+- `api.py`  
+  Main API entrypoint
+
+- `repo_analyzer.py`  
+  Repository inspection and signal extraction
+
+- `repo_decision.py`  
+  Repo classification, readiness, and launch strategy selection
+
+- `session_runtime.py`  
+  Session lifecycle, command execution, server detection, preview readiness
+
+- `presentation_resolver.py`  
+  User-facing experience resolution for preview vs terminal fallback
+
+- `command_rewriter.py`  
+  Safety and rewrite layer for risky or misleading command plans
+
+- `smart_error_hints.py`  
+  Structured failure interpretation and next-step hints
+
+- `smart_timeout.py`  
+  Timeout heuristics based on repo and command context
+
+- `interactive_detection.py`  
+  Detection of interactive commands that should be avoided or rewritten
+
+- `strategy_insights.py`  
+  Strategy reasoning helpers
+
+- `run_command_policy.py`  
+  Execution policy and command safety controls
+
+- `test_repo_matrix.py`  
+  Matrix verification for supported repo categories
+
+---
+
+## Truthful behavior examples
+
+### When a repo is supported
+Tekarab Sandbox can:
+- infer setup steps
+- launch the app
+- detect the reachable service
+- expose a real public preview URL
+- mark the primary experience as ready
+
+### When a repo is unclear
+Tekarab Sandbox does **not** pretend the app launched.
+
+Instead, it can:
+- reject unsafe automatic execution
+- mark the result as unclear or deferred
+- create a terminal-oriented exploratory session
+- report the blockers honestly
+
+This is a deliberate product choice, not a missing message.
+
+---
+
+## Example user experience
+
+Depending on what the system finds, the primary experience may become:
+
+- **Open Web App**  
+  when a real preview is reachable
+
+- **Open Terminal**  
+  when the repository needs exploration or truthful fallback
+
+This keeps the system honest and avoids fake "success" states.
+
+---
+
+## Current limitations
+
+This is still a focused demo, not a finished universal runner.
+
+Known limitations include:
+- limited support matrix by design
+- some template repos still classify as deferred
+- some API-like repos still require manual review
+- GitHub presentation and documentation are still being polished
+- auxiliary tooling and cleanup are still in progress
+
+---
+
+## Near-term roadmap
+
+Near-term priorities are intentionally narrow:
+
+1. Keep the current support matrix stable
+2. Improve terminal and preview clarity
+3. Add better demo documentation and screenshots
+4. Expand support only after current flows are consistently reliable
+
+---
+
+## Project status
+
+Current state: **community demo in active refinement**
+
+What is already real:
+- repository analysis
+- execution planning
+- truthful fallback behavior
+- preview detection
+- verified working cases across multiple repo categories
+
+What still needs polish:
+- GitHub documentation
+- showcase examples
+- cleanup of remaining auxiliary/internal files
+- broader repo coverage over time
+
+---
+
+## Philosophy
+
+Tekarab Sandbox would rather tell the truth than impress you with fake success.
+
+That sounds obvious, but apparently it needs to be said out loud on the internet.
+
+---
 
 ## License
 
